@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Petal &amp; Paper</title>
+  <meta name="description" content="A free aesthetic photo editor and collage maker with vintage frames, coquette stickers, film filters and script text.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8E%80%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Allura&family=Caveat:wght@400;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Courier+Prime&family=Dancing+Script:wght@400;600&family=Great+Vibes&family=Homemade+Apple&family=IM+Fell+English:ital@0;1&family=Jost:wght@300;400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Parisienne&family=Pinyon+Script&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Special+Elite&family=VT323&family=Silkscreen&family=Press+Start+2P&family=Pacifico&family=Shrikhand&family=Fredoka:wght@500;700&family=Monoton&family=Italianno&family=Mrs+Saint+Delafield&family=Monsieur+La+Doulaise&family=Sacramento&family=Indie+Flower&family=Reenie+Beanie&family=Gloria+Hallelujah&family=Cinzel:wght@400;700&family=Bodoni+Moda:ital,wght@0,400;0,700;1,400&family=DM+Serif+Display:ital@0;1&family=Abril+Fatface&family=Satisfy&family=Kaushan+Script&family=Playball&family=Lobster&family=Yellowtail&family=Alex+Brush&family=Permanent+Marker&family=Shadows+Into+Light&family=Patrick+Hand&family=Amatic+SC:wght@400;700&family=Kalam:wght@400;700&family=EB+Garamond:ital,wght@0,400;1,400&family=Lora:ital,wght@0,400;1,400&family=Old+Standard+TT&family=UnifrakturMaguntia&family=Rye&family=Righteous&family=Bungee&family=Lilita+One&family=Bebas+Neue&family=Poppins:wght@400;700&family=Montserrat:wght@400;700&family=Quicksand:wght@400;700&family=Comfortaa:wght@400;700&family=Anton&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+  <script>try { const t = localStorage.getItem('pp.theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
+</head>
+<body>
+<div class="app" id="app">
+  <!-- ============ Top bar ============ -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">✿</span>
+      <div>
+        <div class="brand-name">Petal &amp; Paper</div>
+        <div class="brand-sub">aesthetic photo atelier</div>
+      </div>
+    </div>
+    <div class="top-actions">
+      <button class="icon-btn" id="undoBtn" title="Undo (Ctrl+Z)" disabled><i data-lucide="undo-2"></i></button>
+      <button class="icon-btn" id="redoBtn" title="Redo (Ctrl+Shift+Z)" disabled><i data-lucide="redo-2"></i></button>
+      <span class="sep"></span>
+      <button class="icon-btn" id="clearBtn" title="Start a blank canvas"><i data-lucide="rotate-ccw"></i></button>
+      <button class="icon-btn" id="themeBtn" title="Switch light / dark"><i data-lucide="moon"></i></button>
+      <div class="export-wrap">
+        <button class="btn primary" id="exportBtn" title="Download edited image"><i data-lucide="download"></i><span>Download</span></button>
+        <div class="popover" id="exportPop" hidden>
+          <h3>Download image</h3>
+          <p>Free, full quality, no watermark ♡</p>
+          <div class="field">
+            <div class="field-label">Format</div>
+            <div class="seg" id="fmtSeg">
+              <button data-fmt="png" class="active">PNG</button>
+              <button data-fmt="jpeg">JPEG</button>
+            </div>
+          </div>
+          <div class="field" id="qualityField" hidden>
+            <label>Quality <output id="qualityOut">92%</output></label>
+            <input type="range" id="quality" min="50" max="100" value="92">
+          </div>
+          <div class="field">
+            <div class="field-label">Size</div>
+            <div class="seg" id="scaleSeg">
+              <button data-scale="1">1×</button>
+              <button data-scale="2" class="active">2×</button>
+              <button data-scale="3">3×</button>
+            </div>
+            <div class="dims" id="exportDims"></div>
+          </div>
+          <button class="btn primary block" id="downloadBtn"><i data-lucide="download"></i><span style="display:inline">Download edited image</span></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ Tool rail ============ -->
+  <nav class="rail" id="rail">
+    <button class="rail-btn active" data-tab="photos"><i data-lucide="image-plus"></i><span>Photos</span></button>
+    <button class="rail-btn" data-tab="frames"><i data-lucide="frame"></i><span>Frames</span></button>
+    <button class="rail-btn" data-tab="stickers"><i data-lucide="sticker"></i><span>Stickers</span></button>
+    <button class="rail-btn" data-tab="text"><i data-lucide="type"></i><span>Text</span></button>
+    <button class="rail-btn" data-tab="filters"><i data-lucide="wand-2"></i><span>Filters</span></button>
+    <button class="rail-btn" data-tab="canvas"><i data-lucide="palette"></i><span>Canvas</span></button>
+    <button class="rail-btn" data-tab="layers"><i data-lucide="layers"></i><span>Layers</span></button>
+  </nav>
+
+  <!-- ============ Side panel ============ -->
+  <aside class="panel open" id="panel">
+
+    <section class="tab active" data-tab="photos">
+      <div class="panel-head">
+        <h2>Your photos</h2>
+        <p>Drop in your memories. They stay on your device — nothing is uploaded anywhere.</p>
+      </div>
+      <label class="dropzone" id="photoDrop">
+        <i data-lucide="upload-cloud"></i>
+        <strong>Drop photos here</strong>
+        <span>or click to browse · JPG, PNG, WEBP</span>
+      </label>
+      <div class="hint"><i data-lucide="heart"></i><span>Select a frame first, then upload, to drop photos straight inside it. You can also paste an image with Ctrl+V.</span></div>
+      <h3 class="sub">Uploaded</h3>
+      <div class="tray" id="tray"><p class="empty">No photos yet</p></div>
+    </section>
+
+    <section class="tab" data-tab="frames">
+      <div class="panel-head">
+        <h2>Frames</h2>
+        <p>Polaroids, film strips, gilded ovals, lace and bows — each with a cut-out window for your photo.</p>
+      </div>
+      <div class="hint"><i data-lucide="sparkles"></i><span><b>Put a photo in any frame</b> (star, heart, layouts…): drag the photo onto the frame window, double-click the window, or select the photo and tap <b>Put in frame</b>. Shift+click a photo and a frame to choose exactly which frame.</span></div>
+      <div class="chips" id="frameCats" style="margin-top:14px">
+        <button class="chip active" data-cat="all">All</button>
+        <button class="chip" data-cat="classic">Classic</button>
+        <button class="chip" data-cat="coquette">Coquette</button>
+        <button class="chip" data-cat="vintage">Vintage</button>
+        <button class="chip" data-cat="y2k">Digicam &amp; Y2K</button>
+        <button class="chip" data-cat="layouts">Collage layouts</button>
+        <button class="chip" data-cat="shapes">Shapes</button>
+        <button class="chip" data-cat="devices">Devices &amp; social</button>
+        <button class="chip" data-cat="paper">Paper</button>
+        <button class="chip" data-cat="decor">Decorated</button>
+      </div>
+      <div class="grid cols-2" id="frameGrid"></div>
+    </section>
+
+    <section class="tab" data-tab="stickers">
+      <div class="panel-head">
+        <h2>Stickers</h2>
+        <p>Tap to add, or drag onto your canvas.</p>
+      </div>
+      <div class="chips" id="stickerCats">
+        <button class="chip active" data-cat="all">All</button>
+        <button class="chip" data-cat="florals">Florals</button>
+        <button class="chip" data-cat="coquette">Coquette</button>
+        <button class="chip" data-cat="vintage">Vintage</button>
+        <button class="chip" data-cat="y2k">Digicam &amp; Y2K</button>
+        <button class="chip" data-cat="words">Tags &amp; words</button>
+        <button class="chip" data-cat="fun">Cute things</button>
+        <button class="chip" data-cat="doodles">Doodles</button>
+        <button class="chip" data-cat="tapes">Washi tape</button>
+        <button class="chip" data-cat="quotes">Quotes</button>
+        <button class="chip" data-cat="mine">My stickers</button>
+      </div>
+      <div class="grid cols-3" id="stickerGrid"></div>
+    </section>
+
+    <section class="tab" data-tab="text">
+      <div class="panel-head">
+        <h2>Text</h2>
+        <p>Script, typewriter and vintage serif styles.</p>
+      </div>
+      <div class="preset-list" id="textPresets"></div>
+
+      <h3 class="sub">Style selected text</h3>
+      <div class="props disabled" id="textProps">
+        <div class="field" style="margin-top:0">
+          <label for="fontSel">Font</label>
+          <select class="select" id="fontSel"></select>
+        </div>
+        <div class="field">
+          <label for="fontSize">Size <output id="fontSizeOut">64</output></label>
+          <input type="range" id="fontSize" min="12" max="260" value="64">
+        </div>
+        <div class="field">
+          <div class="field-label">Color</div>
+          <div class="swatches" id="textSwatches"></div>
+        </div>
+        <div class="field">
+          <div class="field-label">Style</div>
+          <div class="row wrap">
+            <div class="seg">
+              <button id="tBold" title="Bold"><i data-lucide="bold"></i></button>
+              <button id="tItalic" title="Italic"><i data-lucide="italic"></i></button>
+            </div>
+            <div class="seg" id="alignSeg">
+              <button data-align="left" title="Align left"><i data-lucide="align-left"></i></button>
+              <button data-align="center" title="Align center"><i data-lucide="align-center"></i></button>
+              <button data-align="right" title="Align right"><i data-lucide="align-right"></i></button>
+            </div>
+            <div class="seg">
+              <button id="tUnderline" title="Underline"><i data-lucide="underline"></i></button>
+              <button id="tStrike" title="Strikethrough"><i data-lucide="strikethrough"></i></button>
+              <button id="tCase" title="Change case (UPPER / lower / Title)"><i data-lucide="case-sensitive"></i></button>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <div class="field-label">Effects</div>
+          <div class="chips" id="textFx">
+            <button class="chip" data-fx="none">None</button>
+            <button class="chip" data-fx="neon">Neon</button>
+            <button class="chip" data-fx="sticker">Sticker</button>
+            <button class="chip" data-fx="bubble">Bubble</button>
+            <button class="chip" data-fx="hollow">Hollow</button>
+            <button class="chip" data-fx="retro">Retro 3D</button>
+            <button class="chip" data-fx="glow">Soft glow</button>
+            <button class="chip" data-fx="emboss">Emboss</button>
+            <button class="chip" data-fx="highlight">Marker</button>
+            <button class="chip" data-fx="glitch">Glitch</button>
+            <button class="chip" data-fx="longshadow">Long shadow</button>
+            <button class="chip" data-fx="comic">Comic</button>
+            <button class="chip" data-fx="gold">Gold foil</button>
+            <button class="chip" data-fx="fire">Fire</button>
+            <button class="chip" data-fx="ice">Ice</button>
+            <button class="chip" data-fx="date">Date stamp</button>
+          </div>
+        </div>
+        <div class="field">
+          <div class="field-label">Gradient fill</div>
+          <div class="swatches" id="textGradients"></div>
+        </div>
+        <div class="field">
+          <label for="charSpacing">Letter spacing <output id="charSpacingOut">0</output></label>
+          <input type="range" id="charSpacing" min="-100" max="1200" value="0">
+        </div>
+        <div class="field">
+          <label for="lineHeight">Line height <output id="lineHeightOut">1.1</output></label>
+          <input type="range" id="lineHeight" min="0.7" max="2.4" step="0.05" value="1.1">
+        </div>
+        <div class="field">
+          <label for="curve">Curve <output id="curveOut">0</output></label>
+          <input type="range" id="curve" min="-100" max="100" value="0">
+        </div>
+
+        <label class="switch">Text shadow <input type="checkbox" id="shadowOn"></label>
+        <div class="sub-props" id="shadowProps">
+          <div class="field">
+            <div class="field-label">Shadow color</div>
+            <div class="swatches" id="shadowSwatches"></div>
+          </div>
+          <div class="field">
+            <label for="shadowBlur">Softness <output id="shadowBlurOut">12</output></label>
+            <input type="range" id="shadowBlur" min="0" max="60" value="12">
+          </div>
+          <div class="field">
+            <label for="shadowOff">Distance <output id="shadowOffOut">4</output></label>
+            <input type="range" id="shadowOff" min="0" max="30" value="4">
+          </div>
+        </div>
+
+        <label class="switch">Outline <input type="checkbox" id="strokeOn"></label>
+        <div class="sub-props" id="strokeProps">
+          <div class="field">
+            <div class="field-label">Outline color</div>
+            <div class="swatches" id="strokeSwatches"></div>
+          </div>
+          <div class="field">
+            <label for="strokeW">Thickness <output id="strokeWOut">2</output></label>
+            <input type="range" id="strokeW" min="1" max="12" value="2">
+          </div>
+        </div>
+
+        <label class="switch">Label background <input type="checkbox" id="bgOn"></label>
+        <div class="sub-props" id="bgProps">
+          <div class="field">
+            <div class="swatches" id="labelSwatches"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tab" data-tab="filters">
+      <div class="panel-head">
+        <h2>Filters</h2>
+        <p>Digicam, film and soft looks, plus fine adjustments for the selected photo.</p>
+      </div>
+      <div class="hint" id="fxEmpty"><i data-lucide="image"></i><span>Select a photo on the canvas to apply a filter.</span></div>
+      <div class="props" id="fxBody">
+        <div class="chips" id="presetCats" style="margin-top:14px">
+          <button class="chip" data-cat="all">All</button>
+          <button class="chip active" data-cat="retrocam">Retro Cam</button>
+          <button class="chip" data-cat="digicam">Digicam</button>
+          <button class="chip" data-cat="film">Film</button>
+          <button class="chip" data-cat="soft">Soft &amp; dreamy</button>
+          <button class="chip" data-cat="bw">B&amp;W</button>
+          <button class="chip" data-cat="seasons">Seasons &amp; travel</button>
+          <button class="chip" data-cat="cinema">Cinema</button>
+          <button class="chip" data-cat="decades">Decades</button>
+          <button class="chip" data-cat="color">Colour pop</button>
+          <button class="chip" data-cat="duotone">Duotone</button>
+        </div>
+        <div class="field">
+          <label for="fxIntensity">Look strength <output id="fxIntensityOut">100</output></label>
+          <input type="range" id="fxIntensity" min="0" max="100" value="100">
+        </div>
+        <div class="presets" id="presetGrid" style="margin-top:12px"></div>
+        <div id="fxSliders"></div>
+        <div class="row" style="margin-top:18px">
+          <button class="btn small ghost" id="fxReset"><i data-lucide="rotate-ccw"></i>Reset</button>
+          <button class="btn small" id="fxAll"><i data-lucide="copy"></i>Apply to all photos</button>
+        </div>
+
+        <h3 class="sub">Digicam date stamp</h3>
+        <div class="chips" id="dateFmt">
+          <button class="chip active" data-fmt="yy">'26 10 10</button>
+          <button class="chip" data-fmt="ymd">2026.10.10</button>
+          <button class="chip" data-fmt="dmy">10/10/2026</button>
+          <button class="chip" data-fmt="time">10.10.26 9:41PM</button>
+        </div>
+        <div class="field">
+          <div class="field-label">Stamp color</div>
+          <div class="swatches" id="dateColors"></div>
+        </div>
+        <button class="btn small block" id="addDate" style="margin-top:14px"><i data-lucide="calendar"></i>Add date stamp to photo</button>
+      </div>
+    </section>
+
+    <section class="tab" data-tab="canvas">
+      <div class="panel-head">
+        <h2>Canvas</h2>
+        <p>Size, paper and finishing touches for the whole collage.</p>
+      </div>
+      <h3 class="sub" style="margin-top:4px">Size</h3>
+      <div class="chips" id="sizeChips"></div>
+      <h3 class="sub">Background color</h3>
+      <div class="bg-grid" id="bgColors"></div>
+      <h3 class="sub">Paper &amp; patterns</h3>
+      <div class="bg-grid textures" id="bgTextures"></div>
+      <h3 class="sub">Finish</h3>
+      <div class="field" style="margin-top:0">
+        <label for="vignette">Vignette <output id="vignetteOut">0</output></label>
+        <input type="range" id="vignette" min="0" max="100" value="0">
+      </div>
+      <div class="field">
+        <label for="grain">Film grain <output id="grainOut">0</output></label>
+        <input type="range" id="grain" min="0" max="100" value="0">
+      </div>
+      <div class="field">
+        <label for="leak">Light leak <output id="leakOut">0</output></label>
+        <input type="range" id="leak" min="0" max="100" value="0">
+      </div>
+      <div class="field">
+        <label for="dust">Dust &amp; scratches <output id="dustOut">0</output></label>
+        <input type="range" id="dust" min="0" max="100" value="0">
+      </div>
+      <div class="field">
+        <label for="paper">Paper / scan texture <output id="paperOut">0</output></label>
+        <input type="range" id="paper" min="0" max="100" value="0">
+      </div>
+    </section>
+
+    <section class="tab" data-tab="layers">
+      <div class="panel-head">
+        <h2>Layers</h2>
+        <p>Top of the list sits on top of the canvas. Drag to reorder, double-click a name to rename.</p>
+      </div>
+      <ul class="layer-list" id="layerList"></ul>
+    </section>
+  </aside>
+
+  <!-- ============ Stage ============ -->
+  <main class="stage" id="stage">
+    <div class="floatbar" id="ctxbar" hidden>
+      <span class="kind-tag" id="kindTag">Photo</span>
+      <button class="icon-btn label-btn" data-cmd="fill" data-show="frame" title="Add a photo inside this frame"><i data-lucide="image-plus"></i>Add photo</button>
+      <button class="icon-btn" data-cmd="crop" data-show="photo" title="Crop"><i data-lucide="crop"></i></button>
+      <button class="icon-btn" data-cmd="filters" data-show="photo" title="Filters"><i data-lucide="wand-2"></i></button>
+      <button class="icon-btn label-btn" data-cmd="putframe" data-show="framable" title="Put the photo inside the frame"><i data-lucide="frame"></i>Put in frame</button>
+      <button class="icon-btn" data-cmd="unframe" data-show="linked" title="Take out of frame"><i data-lucide="unlink"></i></button>
+      <button class="icon-btn label-btn" data-cmd="group" data-show="groupable" title="Group (Ctrl+G)"><i data-lucide="group"></i>Group</button>
+      <button class="icon-btn label-btn" data-cmd="ungroup" data-show="group" title="Ungroup (Ctrl+Shift+G)"><i data-lucide="ungroup"></i>Ungroup</button>
+      <button class="icon-btn label-btn" data-cmd="detach" data-show="attached" title="Stop following the photo"><i data-lucide="pin-off"></i>Unpin</button>
+      <button class="icon-btn" data-cmd="text" data-show="text" title="Text style"><i data-lucide="type"></i></button>
+      <span class="divider" data-show="photo frame text"></span>
+      <button class="icon-btn" data-cmd="front" data-show="any" title="Bring to front"><i data-lucide="chevrons-up"></i></button>
+      <button class="icon-btn" data-cmd="forward" data-show="any" title="Bring forward"><i data-lucide="arrow-up"></i></button>
+      <button class="icon-btn" data-cmd="backward" data-show="any" title="Send backward"><i data-lucide="arrow-down"></i></button>
+      <button class="icon-btn" data-cmd="back" data-show="any" title="Send to back"><i data-lucide="chevrons-down"></i></button>
+      <span class="divider" data-show="any"></span>
+      <button class="icon-btn" data-cmd="flipx" data-show="photo frame sticker text group" title="Flip horizontal"><i data-lucide="flip-horizontal"></i></button>
+      <button class="icon-btn" data-cmd="flipy" data-show="photo frame sticker group" title="Flip vertical"><i data-lucide="flip-vertical"></i></button>
+      <button class="icon-btn" data-cmd="shadow" data-show="photo frame sticker group" title="Soft drop shadow"><i data-lucide="cloud"></i></button>
+      <button class="icon-btn" data-cmd="dup" data-show="any" title="Duplicate (Ctrl+D)"><i data-lucide="copy"></i></button>
+      <button class="icon-btn" data-cmd="lock" data-show="photo frame sticker text group" title="Lock / unlock" id="lockBtn"><i data-lucide="lock"></i></button>
+      <div class="opacity-ctl" data-show="photo frame sticker text group" title="Opacity">
+        <i data-lucide="droplet"></i><input type="range" id="opacity" min="5" max="100" value="100">
+      </div>
+      <button class="icon-btn danger" data-cmd="del" data-show="any" title="Delete"><i data-lucide="trash-2"></i></button>
+    </div>
+
+    <div class="floatbar" id="cropbar" hidden>
+      <span class="kind-tag">Crop</span>
+      <div class="seg" id="aspectSeg">
+        <button data-aspect="0" class="active">Free</button>
+        <button data-aspect="1">1:1</button>
+        <button data-aspect="0.8">4:5</button>
+        <button data-aspect="0.75">3:4</button>
+        <button data-aspect="1.7778">16:9</button>
+      </div>
+      <span class="divider"></span>
+      <button class="icon-btn label-btn" id="cropCancel"><i data-lucide="x"></i>Cancel</button>
+      <button class="btn small primary" id="cropApply"><i data-lucide="check"></i>Apply</button>
+    </div>
+
+    <div class="canvas-wrap" id="canvasWrap">
+      <div class="canvas-shell" id="canvasShell"><canvas id="c"></canvas></div>
+    </div>
+
+    <div class="stage-hint" id="stageHint"><b>Tip:</b> double-click a frame window to drop a photo inside ✿</div>
+
+    <div class="zoombar">
+      <button class="icon-btn" id="zoomOut" title="Zoom out"><i data-lucide="zoom-out"></i></button>
+      <span id="zoomLabel">100%</span>
+      <button class="icon-btn" id="zoomIn" title="Zoom in"><i data-lucide="zoom-in"></i></button>
+      <button class="icon-btn" id="zoomFit" title="Fit to screen"><i data-lucide="maximize"></i></button>
+    </div>
+
+    <div class="drop-veil"><div>Drop to add ✿</div></div>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<input type="file" id="photoInput" accept="image/*" multiple hidden>
+<input type="file" id="stickerInput" accept="image/png,image/webp,image/gif,image/svg+xml" multiple hidden>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.400.0/dist/umd/lucide.min.js"></script>
+<script src="js/assets.js"></script>
+<script src="js/assets-extra.js"></script>
+<script src="js/assets-more.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
